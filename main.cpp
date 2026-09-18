@@ -134,75 +134,98 @@ void generarInforme(PuntoTrayectoria puntos[], int cantidad)
     cout << "Cantidad de elementos en estado LEJANO: " << contadorLEJANO << endl;
     cout << "Cantidad de elementos en estado EXTREMO: " << contadorEXTREMO << endl;
 
-    cout << "Factor promedio de todos los elementos: " << distanciaPromedio / cantidad << endl;
+    cout << "Distancia promedio de todos los elementos: " << distanciaPromedio / cantidad << endl;
+}
+
+void Menu()
+{
+    cout << "Bienvenido al programa de registro de puntos" << endl;
+    cout << "1. Registrar puntos y generar informe" << endl;
+    cout << "2. Salir" << endl;
 }
 
 int main()
 {
-    int cantidad;
-    PuntoTrayectoria puntos[10];
-    do
-    {
-        cout << "Cuantos puntos desea registrar del 1 al 10?: " << endl;
-        cin >> cantidad;
-        if (cantidad < 1 || cantidad > 10)
-        {
-            system("cls");
-            cout << "Cantidad invalida, escriba una cantidad correcta" << endl;
-        }
-    } while (cantidad < 1 || cantidad > 10);
-
-    for (int i = 0; i < cantidad; i++)
-    {
-        cout << endl;
-        cout << i + 1 << ". Punto: " << endl;
-        cout << endl;
-        registrarPunto(puntos[i]);
-        cout << endl;
-        clasificarPunto(puntos[i]);
-    }
-
-    PuntoTrayectoria *mayorDistancia = obtenerPuntoMasAlejado(puntos, cantidad);
-
-    cout << endl
-         << endl;
-    cout << "------------------ PUNTO CON MAYOR DISTANCIA --------------------- " << endl;
-
-    cout << "Identificador: " << mayorDistancia->identificador << endl;
-    cout << "Nombre: " << mayorDistancia->nombre << endl;
-    cout << "Coordenada 1: " << mayorDistancia->coordenadas[0] << endl;
-    cout << "Coordenada 2: " << mayorDistancia->coordenadas[1] << endl;
-    cout << "Coordenada 3: " << mayorDistancia->coordenadas[2] << endl;
-    cout << "Distancia respecto al origen: " << mayorDistancia->distanciaOrigen << endl;
-    cout << "Clasificacion: " << mayorDistancia->clasificacion << endl;
-
+    int cantidad, opcion;
     string respuesta;
-    cout << "Quiere recalibrar las coordenadas de este punto?: Si/No " << endl;
-    cin >> respuesta;
-
-    if (respuesta == "Si")
+    PuntoTrayectoria puntos[10];
+    Menu();
+    cin >> opcion;
+    if (opcion == 1)
     {
-        float desplazamientoX, desplazamientoY, desplazamientoZ;
-        cout << "Cuanto de desplazamiento tiene X?: " << endl;
-        cin >> desplazamientoX;
-        cout << "Cuanto de desplazamiento tiene Y?: " << endl;
-        cin >> desplazamientoY;
-        cout << "Cuanto de desplazamiento tiene Z?: " << endl;
-        cin >> desplazamientoZ;
-        corregirCoordenadas(*mayorDistancia, desplazamientoX, desplazamientoY, desplazamientoZ);
+        cout << "1. Registrar puntos" << endl;
+        do
+        {
+            cout << "Cuantos puntos desea registrar del 1 al 10?: " << endl;
+            cin >> cantidad;
+            if (cantidad < 1 || cantidad > 10)
+            {
+                system("cls");
+                cout << "Cantidad invalida, escriba una cantidad correcta" << endl;
+            }
+        } while (cantidad < 1 || cantidad > 10);
 
-        cout << "Coordenada X: " << mayorDistancia->coordenadas[0] << endl;
-        cout << "Coordenada Y: " << mayorDistancia->coordenadas[1] << endl;
-        cout << "Coordenada Z: " << mayorDistancia->coordenadas[2] << endl;
+        for (int i = 0; i < cantidad; i++)
+        {
+            cout << endl;
+            cout << i + 1 << ". Punto: " << endl;
+            cout << endl;
+            registrarPunto(puntos[i]);
+            cout << endl;
+            clasificarPunto(puntos[i]);
+        }
 
-        cout << "Distancia origen: " << calcularDistancia(mayorDistancia) << endl;
-        clasificarPunto(*mayorDistancia);
+        PuntoTrayectoria *mayorDistancia = obtenerPuntoMasAlejado(puntos, cantidad);
+
+        cout << endl
+             << endl;
+        cout << "------------------ PUNTO CON MAYOR DISTANCIA --------------------- " << endl;
+
+        cout << "Identificador: " << mayorDistancia->identificador << endl;
+        cout << "Nombre: " << mayorDistancia->nombre << endl;
+        cout << "Coordenada 1: " << mayorDistancia->coordenadas[0] << endl;
+        cout << "Coordenada 2: " << mayorDistancia->coordenadas[1] << endl;
+        cout << "Coordenada 3: " << mayorDistancia->coordenadas[2] << endl;
+        cout << "Distancia respecto al origen: " << mayorDistancia->distanciaOrigen << endl;
+        cout << "Clasificacion: " << mayorDistancia->clasificacion << endl;
+
+        cout << "Quiere recalibrar las coordenadas de este punto?: Si/No " << endl;
+        cin >> respuesta;
+
+        if (respuesta == "Si")
+        {
+            float desplazamientoX, desplazamientoY, desplazamientoZ;
+            cout << "Cuanto de desplazamiento tiene X?: " << endl;
+            cin >> desplazamientoX;
+            cout << "Cuanto de desplazamiento tiene Y?: " << endl;
+            cin >> desplazamientoY;
+            cout << "Cuanto de desplazamiento tiene Z?: " << endl;
+            cin >> desplazamientoZ;
+            corregirCoordenadas(*mayorDistancia, desplazamientoX, desplazamientoY, desplazamientoZ);
+
+            cout << "Coordenada X: " << mayorDistancia->coordenadas[0] << endl;
+            cout << "Coordenada Y: " << mayorDistancia->coordenadas[1] << endl;
+            cout << "Coordenada Z: " << mayorDistancia->coordenadas[2] << endl;
+
+            cout << "Distancia origen: " << calcularDistancia(mayorDistancia) << endl;
+            clasificarPunto(*mayorDistancia);
+        }
+        else
+        {
+            cout << "No se aumentaron las cargas del elemento critico" << endl;
+        }
+
+        generarInforme(puntos,cantidad);
+    }
+    else if (opcion == 2)
+    {
+        system("cls");
+        cout << "Feliz noche" << endl;
     }
     else
     {
-        cout << "No se aumentaron las cargas del elemento critico" << endl;
+        cout << "Opcion invalida" << endl;
     }
 
-    generarInforme(puntos, cantidad);
     return 0;
 }
